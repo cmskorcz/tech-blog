@@ -2,7 +2,9 @@ const express = require('express');
 const sequelize = require('./config/connection');
 const session = require('express-session');
 
-// const routes = require('./controllers')
+require('dotenv').config();
+
+const routes = require('./controllers')
 
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
@@ -34,8 +36,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use(routes);
+app.use(routes);
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log(`listening on PORT ${PORT}`))
 })
