@@ -66,4 +66,87 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        const foundPost = await Post.findOne({
+            where: {
+                id: req.params.id
+            },
+            attributes: [
+                'id',
+                'title',
+                'post_content',
+            ],
+            include: [
+                {
+                    model: User,
+                    attributes: ['username']
+                },
+                {
+                    model: Comment,
+                    attributes: [
+                        'comment_content',
+                        'created_at'
+                    ],
+                    include: {
+                        model: User,
+                        attributes: ['username']
+                    }
+                }
+            ]
+        });
+
+        if (!foundPost) {
+            res.status(404).json({ message: 'Unable to locate post by that id' })
+            return;
+        }
+
+        res.json(foundPost)
+
+    } catch (error) {
+        res.status(500).json(error)
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedPost = await Post.update(req.body, {
+            where: {
+                id: req.params.id
+            }
+        });
+    
+        if (!updatedPost) {
+            res.status(404).json({ message: 'Unable to locate post by that id' })
+            return;
+        }
+    
+        res.json(updatedPost);
+    
+    } catch (error) {
+        res.status(500).json(error)
+
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedPost = await Post.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+
+        if (!deletedPost) {
+            res.status(404).json({ message: 'Unable to locate post by that id' })
+            return;
+        }
+
+        res.json({ message: 'Post successfully deleted' })
+
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
 module.exports = router;
