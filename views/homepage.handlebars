@@ -1,1 +1,6 @@
-<h2>This is the homepage</h2>
+<ol>
+    {{#each posts as |post|}}
+    <li>
+        {{> post-info post}}
+    </li>
+</ol>
