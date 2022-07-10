@@ -59,9 +59,7 @@ router.post('/login', async (req, res) => {
             req.session.username = foundUser.username;
             req.session.isLoggedIn = true;
 
-            res.json({
-                message: 'You are now logged in.'
-            })
+            res.json(foundUser)
         })
     } catch (err) {
         res.status(500).json(err)
