@@ -19,7 +19,14 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const newUser = await User.create(req.body);
-        res.json({ message: 'Successfully created new User' });
+        
+        req.session.save(() => {
+            req.session.user_id = newUser.id;
+            req.session.username = newUser.username;
+            req.session.isLoggedIn = true;
+        });
+
+        res.json(newUser)
 
     } catch (err) {
         res.status(500).json(err)

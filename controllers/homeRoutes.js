@@ -82,7 +82,7 @@ router.get('/post/:id', async (req, res) => {
             ]
         });
     
-        if (!post) {
+        if (!foundPost) {
             res.status(404).json({ message: 'Unable to find post' });
             return;
         }
