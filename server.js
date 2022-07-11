@@ -19,7 +19,8 @@ const sess = {
 };
 
 const exhbs = require('express-handlebars');
-const hbs = exhbs.create({});
+const helpers = require('./utils/helpers')
+const hbs = exhbs.create({ helpers });
 
 const path = require('path');
 
